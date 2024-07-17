@@ -13,6 +13,7 @@ const server = http.createServer(app);
 
 const corsOptions = {
   origin: '*',
+  //origin: ['https://dash.wodoxo.com', 'https://dash.abcenglishonline.com'],
 };
 
 app.use(cors(corsOptions));
