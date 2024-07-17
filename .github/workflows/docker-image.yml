@@ -27,13 +27,14 @@ jobs:
         MAJOR=$(echo $CURRENT_TAG | cut -d. -f1)
         MINOR=$(echo $CURRENT_TAG | cut -d. -f2)
         PATCH=$(echo $CURRENT_TAG | cut -d. -f3)
-        echo "NEXT_TAG=$((PATCH + 1))" >> $GITHUB_ENV
-        echo "INCREMENTED_TAG=$MAJOR.$MINOR.$NEXT_TAG" >> $GITHUB_ENV
+        NEXT_PATCH=$((PATCH + 1))
+        INCREMENTED_TAG=$MAJOR.$MINOR.$NEXT_PATCH
+        echo "INCREMENTED_TAG=$INCREMENTED_TAG" >> $GITHUB_ENV
 
     - name: Push tag to repository
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "atknatk@gmail.com"
+        git config --local user.name "Atakan Atik"
         git tag $INCREMENTED_TAG
         git push origin $INCREMENTED_TAG
 
