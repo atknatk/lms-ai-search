@@ -30,6 +30,13 @@ jobs:
         echo "NEXT_TAG=$((PATCH + 1))" >> $GITHUB_ENV
         echo "INCREMENTED_TAG=$MAJOR.$MINOR.$NEXT_TAG" >> $GITHUB_ENV
 
+    - name: Push tag to repository
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git tag $INCREMENTED_TAG
+        git push origin $INCREMENTED_TAG
+
     - name: Login to Docker Registry
       uses: docker/login-action@v3
       with:
