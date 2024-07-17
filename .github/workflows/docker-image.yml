@@ -30,7 +30,6 @@ jobs:
         NEXT_PATCH=$((PATCH + 1))
         INCREMENTED_TAG=$MAJOR.$MINOR.$NEXT_PATCH
         echo "INCREMENTED_TAG=$INCREMENTED_TAG" >> $GITHUB_ENV
-
     - name: Push tag to repository
       run: |
         git config --local user.email "atknatk@gmail.com"
