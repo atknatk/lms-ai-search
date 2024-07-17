@@ -3,31 +3,24 @@ import { handleConnection } from './connectionManager';
 import http from 'http';
 import { getPort } from '../config';
 import logger from '../utils/logger';
+import cors from 'cors'; // Import cors middleware
+
+
+const corsOptions = {
+  origin: ['https://dash.wodoxo.com', 'https://dash.abcenglishonline.com'],
+  methods: ['GET', 'POST'],
+};
+
 
 export const initServer = (
   server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>,
 ) => {
   const port = getPort();
-  const wss = new WebSocketServer({ noServer: true });
+  const wss = new WebSocketServer({ server });
 
-  server.on('upgrade', (request, socket, head) => {
-    const origin = request && request.headers && request.headers.origin;
-
-    // CORS kontrolü
-    if (origin !== 'https://dash.wodoxo.com') {
-      socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
-      socket.destroy();
-      return;
-    }
-
-    wss.handleUpgrade(request, socket, head, (ws) => {
-      wss.emit('connection', ws, request);
-    });
-  });
+  // Apply CORS middleware
+  server.on('request', cors(corsOptions));
 
   wss.on('connection', handleConnection);
-
-  server.listen(port, () => {
-    logger.info(`WebSocket server started on port ${port}`);
-  });
+  logger.info(`WebSocket server started on port ${port}`);
 };
